@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mermaid Oracle</title>
+
+<!-- フォント -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Shippori+Mincho:wght@300;400&display=swap" rel="stylesheet">
+
+<!-- 共通スタイル -->
+<link rel="stylesheet" href="assets/css/core.css">
+<link rel="stylesheet" href="assets/css/components.css">
+
+<!-- このページ固有の最小スタイル -->
+<style>
+  .entrance {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 56px 24px 64px;
+    max-width: var(--max-w);
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .entrance-header {
+    width: 100%;
+    animation: cardReveal 1.2s ease-out 0.1s both;
+  }
+
+  .entrance .logo {
+    font-size: clamp(2rem, 7vw, 3.2rem);
+    margin-bottom: 18px;
+  }
+
+  .entrance .logo-rule {
+    margin: 14px 0 10px;
+  }
+
+  .entrance .logo-rule::before,
+  .entrance .logo-rule::after {
+    content: '';
+    flex: 1;
+    max-width: 56px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .entrance .tagline {
+    margin-top: 6px;
+  }
+
+  .entrance-hero {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 24px 0;
+    animation: cardReveal 1.4s ease-out 0.5s both;
+  }
+
+  .hero-img {
+    width: min(280px, 72vw);
+    border-radius: 12px;
+    filter: drop-shadow(0 14px 44px rgba(74,122,120,0.18));
+    animation: drift 7s ease-in-out infinite;
+  }
+
+  .entrance-action {
+    width: 100%;
+    max-width: 340px;
+    animation: cardReveal 1.4s ease-out 0.9s both;
+  }
+
+  .btn-dive {
+    letter-spacing: 0.28em;
+    padding: 18px 24px;
+    font-size: 1.02rem;
+  }
+
+  .btn-dive-hint {
+    margin-top: 14px;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    color: var(--lav);
+    opacity: 0.75;
+  }
+
+  @media (max-height: 640px) {
+    .entrance {
+      padding: 32px 24px 40px;
+    }
+
+    .entrance-hero {
+      padding: 12px 0;
+    }
+
+    .hero-img {
+      width: min(220px, 60vw);
+    }
+  }
+
+  .site-footer {
+    text-align: center;
+    padding: 20px var(--pad-x) 28px;
+    margin-top: 8px;
+  }
+  .site-footer p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    color: rgba(200,168,100,0.5);
+  }
+</style>
+
+</head>
+<body>
+
+<main class="entrance">
+
+<header class="entrance-header">
+  <div class="logo">Mermaid <span>Oracle</span></div>
+
+  <div class="logo-rule">
+    <span class="logo-sub">深海からの神託</span>
+  </div>
+
+  <p class="tagline">— The sea knows your soul —</p>
+</header>
+
+<div class="entrance-hero">
+  <img class="hero-img" src="assets/images/hero.png" alt="Mermaid Oracle">
+</div>
+
+<div class="entrance-action">
+  <a href="oracle.html" class="btn-primary btn-dive" data-transition>
+    ✦ &ensp; 海へ潜る &ensp; ✦
+  </a>
+
+  <p class="btn-dive-hint">Dive into the deep</p>
+</div>
+
+</main>
+
+<script src="assets/js/core.js"></script>
+
+
+<footer class="site-footer">
+  <p>© 2026 Lemurian Mermaid. All rights reserved.</p>
+</footer>
+</body>
+</html>

@@ -1,0 +1,259 @@
+/* ============================================
+   Mermaid Oracle / core.css
+   全ページ共通の世界観基盤
+   - カラー変数 / フォント / 背景 / 波アニメーション
+   - 共通ヘッダー / ロゴ / 区切り線 / セクションタイトル
+   - 全体で使うキーフレーム
+   ============================================ */
+
+/* ---- リセット & ベース ---- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html, body {
+  min-height: 100%;
+}
+
+/* ---- カラーパレット（既存HTMLから完全継承） ---- */
+:root {
+  --bg:      #061826;
+  --teal:    #5AADA8;
+  --teal-lt: #7AABA8;
+  --gold:    #C8A86A;
+  --gold-lt: #E4C488;
+  --lav:     #B0A8C0;
+  --lav-lt:  #D0C8DC;
+  --ink:     #EAF0F4;
+  --ink2:    #A8B8C4;
+  --white:   #FAFEFE;
+  --mist:    #2A3A48;
+  --deep:    #0D1E2A;
+
+  /* レイアウト共通 */
+  --max-w:   480px;
+  --pad-x:   20px;
+}
+
+/* ---- フォント & ベースタイポ ---- */
+body {
+  font-family: 'Shippori Mincho', serif;
+  background: var(--bg);
+  color: var(--ink);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ---- 深海グラデーション背景（既存継承） ---- */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: -2;
+  background: linear-gradient(
+    to bottom,
+    #164b63 0%,
+    #0b2236 45%,
+    #061826 100%
+  );
+}
+
+/* ---- 海底の波（2層SVGアニメーション） ---- */
+body::after {
+  content: '';
+  position: fixed; bottom: 0; left: 0; right: 0; height: 140px; z-index: -1;
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 140'%3E%3Cpath fill='%232ABFBF' fill-opacity='0.09' d='M0,70 C360,115 720,25 1080,70 C1260,92 1350,48 1440,70 L1440,140 L0,140Z'/%3E%3C/svg%3E") repeat-x bottom,
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 90'%3E%3Cpath fill='%237EDDD8' fill-opacity='0.11' d='M0,45 C240,78 480,12 720,45 C960,78 1200,12 1440,45 L1440,90 L0,90Z'/%3E%3C/svg%3E") repeat-x bottom 18px;
+  animation: waveShift 12s linear infinite;
+  pointer-events: none;
+}
+
+/* ============================================
+   共通ヘッダー（ロゴエリア）
+   ============================================ */
+.page-header {
+  text-align: center;
+  padding: 48px 24px 16px;
+}
+
+.logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 7vw, 3.4rem);
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--ink);
+  line-height: 1.1;
+}
+.logo span { color: var(--gold); }
+
+.logo-rule {
+  display: flex; align-items: center; justify-content: center;
+  gap: 14px;
+  margin: 8px 0 4px;
+}
+.logo-sub {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.67rem;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+.tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(0.76rem, 2vw, 0.9rem);
+  color: var(--teal);
+  letter-spacing: 0.2em;
+}
+
+/* ============================================
+   セクション / 区切り
+   ============================================ */
+.section {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 24px var(--pad-x) 0;
+}
+
+.eyebrow {
+  text-align: center;
+  font-size: 0.66rem;
+  letter-spacing: 0.25em;
+  color: var(--gold);
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+.sec-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.25rem, 4vw, 1.6rem);
+  font-weight: 400;
+  color: var(--ink);
+  text-align: center;
+  letter-spacing: 0.08em;
+  margin-bottom: 20px;
+}
+
+/* 金色の薄い区切り線 + 中央の宝石マーク */
+.divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 28px 40px 0;
+  max-width: var(--max-w);
+  margin: 0 auto;
+}
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(184,152,90,0.4), transparent);
+}
+.divider-gem {
+  font-size: 0.68rem;
+  color: var(--gold);
+  opacity: 0.75;
+}
+
+/* ============================================
+   ページ間ナビゲーション（フッター）
+   ============================================ */
+.page-nav {
+  max-width: var(--max-w);
+  margin: 40px auto 32px;
+  padding: 24px var(--pad-x) 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  border-top: 1px solid rgba(184,152,90,0.18);
+}
+.page-nav a {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  color: var(--teal);
+  text-decoration: none;
+  padding: 6px 4px;
+  transition: color 0.3s ease, opacity 0.3s ease;
+}
+.page-nav a:hover {
+  color: var(--gold);
+}
+.page-nav a.back::before {
+  content: '← ';
+  opacity: 0.7;
+}
+.page-nav a.next::after {
+  content: ' →';
+  opacity: 0.7;
+}
+
+/* ============================================
+   キーフレーム（全ページで利用）
+   ============================================ */
+
+/* 波の左右ループ */
+@keyframes waveShift {
+  from { background-position: 0 bottom, 0 bottom 18px; }
+  to   { background-position: -1440px bottom, 1440px bottom 18px; }
+}
+
+/* hero画像のゆらぎ */
+@keyframes drift {
+  0%, 100% { transform: translateY(0) rotate(-0.2deg); }
+  50%      { transform: translateY(-10px) rotate(0.2deg); }
+}
+
+/* 下から浮上 */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* カードや要素の現出 */
+@keyframes cardReveal {
+  from { opacity: 0; transform: scale(0.92) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* やわらかい鼓動 */
+@keyframes pulse {
+  0%, 100% { opacity: 0.6; }
+  50%      { opacity: 1; }
+}
+
+/* ローディングのドット */
+@keyframes wdot {
+  0%, 80%, 100% { transform: scale(0.5); opacity: 0.4; }
+  40%           { transform: scale(1);   opacity: 1;   }
+}
+
+/* ページ切替時のフェード */
+@keyframes pageFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+/* ページ全体に自動でフェードイン */
+main, .page-main {
+  animation: pageFadeIn 0.6s ease-out both;
+}
+
+/* ============================================
+   ユーティリティ
+   ============================================ */
+.fade-in    { animation: cardReveal 0.6s ease-out both; }
+.fade-out   { animation: pageFadeIn 0.4s ease-in reverse both; }
+.text-center { text-align: center; }
+.mt-sm  { margin-top: 12px; }
+.mt-md  { margin-top: 24px; }
+.mt-lg  { margin-top: 40px; }
+
+/* スクロール時のスムーズさ */
+html { scroll-behavior: smooth; }
+
+/* 画像の最低限のリセット */
+img { max-width: 100%; display: block; }

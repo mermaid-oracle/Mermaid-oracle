@@ -1,0 +1,265 @@
+/* ============================================
+   Mermaid Oracle / components.css
+   全ページ共通のUIコンポーネント
+   - ガラス風カード / ボタン / バッジ / モーダル
+   既存HTMLのデザイン言語を維持
+   ============================================ */
+
+/* ============================================
+   ガラス風カード（標準コンテナ）
+   既存の .oracle-card / .moon-card を統一
+   ============================================ */
+.glass-card {
+  background: var(--white);
+  border: 1px solid rgba(184,152,90,0.22);
+  border-radius: 16px;
+  padding: 24px 20px;
+  position: relative;
+  overflow: hidden;
+}
+/* 上部に流れる金〜teal のライン */
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--teal-lt), transparent);
+}
+
+/* よりやわらかな半透明バリエーション（月のページなど） */
+.glass-card.soft {
+  background: rgba(250,254,254,0.72);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+/* ============================================
+   ボタン
+   ============================================ */
+
+/* 主要ボタン：金色枠 + ゴールド文字 */
+.btn-primary {
+  display: inline-block;
+  width: 100%;
+  padding: 16px 24px;
+  background: transparent;
+  border: 1px solid var(--gold);
+  border-radius: 999px;
+  color: var(--gold);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  letter-spacing: 0.22em;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: color 0.4s ease, background-color 0.4s ease;
+  text-align: center;
+  text-decoration: none;
+}
+.btn-primary::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(184,152,90,0.12),
+    transparent);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.btn-primary:hover::before { opacity: 1; }
+.btn-primary:hover {
+  color: var(--gold-lt);
+}
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* セカンダリ：薄い縁のゴースト風 */
+.btn-ghost {
+  display: inline-block;
+  padding: 12px 22px;
+  background: transparent;
+  border: 1px solid rgba(122,171,168,0.4);
+  border-radius: 999px;
+  color: var(--teal);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+.btn-ghost:hover {
+  border-color: var(--teal);
+  color: var(--ink);
+}
+
+/* 保存系（深海色） */
+.btn-save {
+  display: inline-block;
+  width: 100%;
+  padding: 14px 24px;
+  background: var(--teal);
+  border: none;
+  border-radius: 999px;
+  color: var(--white);
+  font-family: 'Shippori Mincho', serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.18em;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.btn-save:hover {
+  background: var(--ink);
+  transform: translateY(-1px);
+}
+
+/* ============================================
+   バッジ / キーワードチップ
+   ============================================ */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  background: rgba(122,171,168,0.1);
+  border: 1px solid rgba(122,171,168,0.25);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--teal);
+}
+.badge strong {
+  color: var(--ink);
+  margin-left: 4px;
+  font-weight: 600;
+}
+
+.kw {
+  display: inline-block;
+  font-size: 0.67rem;
+  letter-spacing: 0.1em;
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 1px solid var(--lav-lt);
+  color: var(--lav);
+}
+
+/* ============================================
+   ローディング演出（波のドット）
+   ============================================ */
+.loading-state {
+  text-align: center;
+  padding: 28px 16px;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--ink2);
+  letter-spacing: 0.1em;
+}
+.wave-dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 10px;
+}
+.wave-dots span {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--teal);
+  animation: wdot 1.2s ease-in-out infinite;
+}
+.wave-dots span:nth-child(2) { animation-delay: .2s; }
+.wave-dots span:nth-child(3) { animation-delay: .4s; }
+
+/* ============================================
+   テキスト入力（手帳系の textarea）
+   ============================================ */
+.diary-input {
+  width: 100%;
+  min-height: 80px;
+  padding: 12px 14px;
+  background: rgba(250,254,254,0.6);
+  border: 1px solid rgba(154,144,168,0.3);
+  border-radius: 12px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 0.92rem;
+  color: var(--ink);
+  line-height: 1.7;
+  resize: vertical;
+  transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+.diary-input:focus {
+  outline: none;
+  border-color: var(--teal-lt);
+  background: var(--white);
+}
+
+/* ============================================
+   モーダル / シートUI
+   （今後 Moon ページ等で必要なら使用）
+   ============================================ */
+.modal-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(13,30,42,0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  align-items: flex-end;
+  justify-content: center;
+}
+.modal-overlay.show {
+  display: flex;
+  animation: pageFadeIn 0.3s ease-out both;
+}
+.modal-sheet {
+  width: 100%;
+  max-width: var(--max-w);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--white);
+  border-radius: 24px 24px 0 0;
+  padding: 24px var(--pad-x);
+  position: relative;
+  animation: slideUp 0.4s ease-out both;
+}
+.modal-handle {
+  width: 44px;
+  height: 4px;
+  background: var(--mist);
+  border-radius: 2px;
+  margin: 0 auto 16px;
+}
+
+/* ============================================
+   フラッシュメッセージ（保存通知など）
+   ============================================ */
+.flash {
+  display: none;
+  text-align: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--gold);
+  letter-spacing: 0.15em;
+  padding: 8px 0;
+}
+.flash.show {
+  display: block;
+  animation: cardReveal 0.5s ease-out both;
+}
+
+/* ============================================
+   エラー表示
+   ============================================ */
+.error-msg {
+  background: rgba(200,80,80,0.08);
+  border: 1px solid rgba(200,80,80,0.2);
+  border-radius: 12px;
+  padding: 16px;
+  color: #8a3a3a;
+  font-size: 0.85rem;
+  text-align: center;
+}

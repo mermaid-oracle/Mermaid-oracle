@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Today's Whisper — Mermaid Oracle</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Shippori+Mincho:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/core.css">
+<link rel="stylesheet" href="assets/css/components.css">
+<style>
+  .oracle-page{max-width:var(--max-w);margin:0 auto;padding:32px 20px 24px;text-align:center;}
+  .oracle-page-title{font-family:'Cormorant Garamond',serif;font-size:clamp(1.4rem,5vw,1.8rem);font-weight:300;letter-spacing:0.28em;color:#EAF0F4;margin-bottom:6px;}
+  .oracle-page-sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.78rem;letter-spacing:0.2em;color:#7AABA8;opacity:0.9;}
+  .eyebrow{color:#C8A86A!important;}
+  .mode-tabs{display:flex;gap:10px;justify-content:center;margin:24px 0 0;}
+  .mode-tab{padding:9px 22px;border-radius:999px;border:1px solid rgba(184,152,90,0.45);background:transparent;color:#C8A86A;font-family:'Cormorant Garamond',serif;font-size:0.88rem;letter-spacing:0.2em;cursor:pointer;transition:background 0.3s,border-color 0.3s;}
+  .mode-tab.active{background:rgba(184,152,90,0.18);border-color:#C8A86A;}
+  .card-stage{perspective:1200px;margin:32px auto 24px;width:min(260px,70vw);aspect-ratio:1084/1451;position:relative;}
+  .card-3d{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 1.1s cubic-bezier(0.4,0,0.2,1);}
+  .card-3d.flipped{transform:rotateY(180deg);}
+  .card-face{position:absolute;inset:0;border-radius:16px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;box-shadow:0 18px 48px rgba(0,0,0,0.45);}
+  .card-face-back{background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(184,152,90,0.18) 0%,transparent 70%),linear-gradient(160deg,#1a3340 0%,#0D1E2A 50%,#1a3340 100%);border:1px solid rgba(184,152,90,0.35);}
+  .card-back-pattern{position:absolute;inset:12px;border:1px solid rgba(184,152,90,0.5);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;}
+  .card-back-pattern::before,.card-back-pattern::after{content:'';position:absolute;left:50%;transform:translateX(-50%);width:60%;height:1px;background:linear-gradient(90deg,transparent,rgba(184,152,90,0.55),transparent);}
+  .card-back-pattern::before{top:22%;}.card-back-pattern::after{bottom:22%;}
+  .card-back-gem{font-size:1.8rem;color:#C8A86A;opacity:0.9;animation:pulse 3.2s ease-in-out infinite;}
+  .card-back-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.7rem;letter-spacing:0.4em;color:#C8A86A;opacity:0.85;text-transform:uppercase;}
+  .card-face-front{transform:rotateY(180deg);background:linear-gradient(160deg,#2a3e4a 0%,#0D1E2A 100%);border:1px solid var(--card-accent,#C8A86A);display:flex;align-items:flex-end;justify-content:center;}
+  .card-face-front img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+  .card-face-front.no-image{background:radial-gradient(ellipse 80% 80% at 50% 100%,rgba(122,171,168,0.32) 0%,transparent 60%),linear-gradient(160deg,#1a3340 0%,#0D1E2A 100%);}
+  .card-face-front.no-image::before{content:'✦';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:3rem;color:#C8A86A;opacity:0.55;animation:pulse 3s ease-in-out infinite;}
+  .card-front-overlay{position:relative;z-index:1;width:100%;padding:14px 14px 12px;background:linear-gradient(to top,rgba(6,18,32,0.88) 0%,rgba(6,18,32,0.45) 60%,transparent 100%);text-align:center;}
+  .card-no{display:block;font-family:'Cormorant Garamond',serif;font-size:0.65rem;letter-spacing:0.32em;color:#C8A86A;margin-bottom:4px;}
+  .card-name{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.05rem;letter-spacing:0.16em;color:#FAFEFE;}
+  .card-stage:empty::before{content:'✦';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:2rem;color:#C8A86A;opacity:0.35;animation:pulse 3.6s ease-in-out infinite;}
+  .card-stage:empty{border:1px dashed rgba(184,152,90,0.3);border-radius:16px;}
+  .actions{margin:24px auto 0;max-width:320px;}
+  .actions .btn-primary+.btn-ghost{margin-top:14px;}
+  .actions.drawn .draw-hint{display:none;}
+  .draw-hint{margin-top:12px;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.72rem;letter-spacing:0.2em;color:#B0A8C0;opacity:0.8;}
+  #redrawBtn{display:none;}#redrawBtn3{display:none;}
+  .result-box{max-width:420px;margin:32px auto 0;padding:24px 22px;opacity:0;transform:translateY(16px);transition:opacity 1s ease-out,transform 1s ease-out;pointer-events:none;background:rgba(6,18,32,0.72)!important;border:1px solid rgba(184,152,90,0.28)!important;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:16px;}
+  .result-box.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .oracle-chapter{font-family:'Cormorant Garamond',serif;font-size:0.7rem;letter-spacing:0.28em;color:#C8A86A;text-transform:uppercase;margin-bottom:8px;}
+  .oracle-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1.2rem;letter-spacing:0.14em;color:#EAF0F4;margin-bottom:18px;}
+  .oracle-msg{font-family:'Shippori Mincho',serif;font-size:0.96rem;line-height:2.2;color:#D8E8F0;letter-spacing:0.06em;}
+  .triple-stage{display:none;gap:10px;justify-content:center;align-items:flex-start;margin:32px auto 0;max-width:480px;}
+  .triple-stage.show{display:flex;}
+  .triple-slot{flex:1;max-width:136px;display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .triple-card-wrap{width:100%;aspect-ratio:1084/1451;perspective:800px;}
+  .triple-label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:0.7rem;letter-spacing:0.2em;color:#C8A86A;opacity:0.9;}
+  .triple-result{max-width:480px;margin:28px auto 0;opacity:0;transform:translateY(16px);transition:opacity 1s ease-out,transform 1s ease-out;pointer-events:none;}
+  .triple-result.show{opacity:1;transform:translateY(0);pointer-events:auto;}
+  .triple-card-msg{margin-bottom:16px;padding:18px;border-radius:16px;background:rgba(6,18,32,0.72);border:1px solid rgba(184,152,90,0.22);backdrop-filter:blur(10px);text-align:center;}
+  .triple-card-msg:last-child{margin-bottom:0;}
+  .triple-pos-label{font-family:'Cormorant Garamond',serif;font-size:0.65rem;letter-spacing:0.3em;color:#C8A86A;text-transform:uppercase;margin-bottom:4px;}
+  .triple-card-name{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:1rem;letter-spacing:0.14em;color:#EAF0F4;margin-bottom:10px;}
+  .triple-card-text{font-family:'Shippori Mincho',serif;font-size:0.88rem;line-height:2.1;color:#D8E8F0;letter-spacing:0.05em;}
+  .page-nav a{color:#7AABA8!important;}.page-nav a:hover{color:#C8A86A!important;}
+
+  .site-footer {
+    text-align: center;
+    padding: 20px var(--pad-x) 28px;
+    margin-top: 8px;
+  }
+  .site-footer p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.22em;
+    color: rgba(200,168,100,0.5);
+  }
+
+</style>
+</head>
+<body>
+<main class="oracle-page">
+<header>
+  <p class="eyebrow">Today's Whisper</p>
+  <h1 class="oracle-page-title">海からのメッセージ</h1>
+  <p class="oracle-page-sub">— Listen to the deep —</p>
+</header>
+<div class="mode-tabs">
+  <button class="mode-tab active" id="tab1">今日の一枚</button>
+  <button class="mode-tab" id="tab3">3枚引き</button>
+</div>
+<div id="mode1">
+  <div class="card-stage" id="cardStage"></div>
+  <div class="actions" id="actions">
+    <button class="btn-primary" id="drawBtn">✦ &ensp; カードを引く &ensp; ✦</button>
+    <button class="btn-ghost" id="redrawBtn">もう一度、海に問う</button>
+    <p class="draw-hint">Touch the card</p>
+  </div>
+  <section class="result-box" id="resultBox" aria-live="polite"></section>
+</div>
+<div id="mode3" style="display:none;">
+  <div class="triple-stage" id="tripleStage">
+    <div class="triple-slot">
+      <div class="triple-card-wrap" id="tripleCard0"></div>
+      <span class="triple-label">過去</span>
+    </div>
+    <div class="triple-slot">
+      <div class="triple-card-wrap" id="tripleCard1"></div>
+      <span class="triple-label">現在</span>
+    </div>
+    <div class="triple-slot">
+      <div class="triple-card-wrap" id="tripleCard2"></div>
+      <span class="triple-label">未来</span>
+    </div>
+  </div>
+  <div class="actions" id="actions3">
+    <button class="btn-primary" id="drawBtn3">✦ &ensp; 3枚引く &ensp; ✦</button>
+    <button class="btn-ghost" id="redrawBtn3">もう一度、海に問う</button>
+    <p class="draw-hint">Touch the cards</p>
+  </div>
+  <section class="triple-result" id="tripleResult" aria-live="polite"></section>
+</div>
+</main>
+<nav class="page-nav">
+  <a href="index.html" class="back" data-transition>入口へ</a>
+  <a href="moon.html" class="next" data-transition>月の手帳へ</a>
+</nav>
+
+<footer class="site-footer">
+  <p>© 2026 Lemurian Mermaid. All rights reserved.</p>
+</footer>
+
+<script src="assets/js/core.js"></script>
+<script src="assets/js/oracle-data.js"></script>
+<script src="assets/js/oracle.js"></script>
+</body>
+</html>
